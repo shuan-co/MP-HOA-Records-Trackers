@@ -29,9 +29,26 @@ public class AssetUpdateController {
 
         return asset;
     }
+    
+    @GetMapping("/myEndpoint2")
+    public void myEndpoint2(@RequestParam int id) {
+        jdbcTemplate.update("DELETE FROM assets WHERE asset_id = ? AND NOT EXISTS (SELECT 1 FROM asset_transactions WHERE asset_id = ?)", id, id);
+    }
 
     @PostMapping("/addAsset")
     public void addAsset(@RequestBody AssetTable asset) {
-        
+        String update = "UPDATE assets " +
+                "SET asset_name = ?, " +
+                "    asset_description = ?, " +
+                "    acquisition_date = ?, " +
+                "    forrent = ?, " +
+                "    asset_value = ?, " +
+                "    type_asset = ?, " +
+                "    status = ?, " +
+                "    loc_lattitude = ?, " +
+                "    loc_longiture = ?, " +
+                "    hoa_name = ? " +
+                "WHERE asset_id = ?";
+        jdbcTemplate.update(update, asset.getName(), asset.getDescription(), asset.getAcquisitionDate(), asset.isForrent(), asset.getAssetValue(), asset.getType(), asset.getStatus(), asset.getLocLattitude(), asset.getLocLongitude(), asset.getHoaName(), asset.getId());
     }
 }

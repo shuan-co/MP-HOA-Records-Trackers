@@ -119,7 +119,7 @@
                                             acquisitionDate: document.getElementById('form3Example1m1').value,
                                             assetValue: document.getElementById('form3Example1n1').value,
                                             description: document.getElementById('form3Example8').value,
-                                            forRent: document.getElementById('yesRent').checked,
+                                            forrent: document.getElementById('yesRent').checked,
                                             type: document.getElementById('type').value,
                                             status: document.getElementById('status').value,
                                             locLattitude: document.getElementById('form3Example9').value,
@@ -133,6 +133,9 @@
                                             },
                                             body: JSON.stringify(asset)
                                         });
+                                        setTimeout(function() {
+                                          location.reload();
+                                        }, 2000);
                                     }
                                 </script>
                               </div>
