@@ -2,7 +2,7 @@ package org.buildr.HOAmanager;
 
 public class DashboardRow {
     private int id;
-    private String name;
+    protected String name;
     private String description;
     private String type;
     private String status;

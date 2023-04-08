@@ -9,7 +9,7 @@
 </head>
   <body>
     <div th:replace="~{navbar}"></div>
-    <div th:replace="~{assetActions}"></div>
+    
     <div class="workboard table-responsive">
         <table class="table table-dark">
             <thead class="fs-3">
@@ -29,7 +29,30 @@
                 <td colspan="1" th:text="${row.status}" ></td>
                 <th scope="col" class="table-active"  style="max-width: 20vh;">
                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetUpdate">Update</button>
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetUpdate" th:attr="data-id=${row.id}" onclick="callJavaFunction(this.getAttribute('data-id'));">Update</button>
+                        <script>
+                            function callJavaFunction(id) {
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("GET", "/myEndpoint?id=" + id);
+                                xhr.onload = function() {
+                                    var asset = JSON.parse(xhr.response); // parse the JSON response
+                                    document.getElementById("form3Example1m").value = asset.id; // set the value of the input field to the asset ID
+                                    document.getElementById("form3Example1n").value = asset.name;
+                                    document.getElementById("form3Example1m1").value = asset.acquisitionDate;
+                                    document.getElementById("form3Example1n1").value = asset.assetValue;
+                                    document.getElementById("form3Example8").value = asset.description;
+                                    document.getElementById("yesRent").checked = asset.forrent;
+                                    document.getElementById("noRent").checked = !asset.forrent;
+                                    document.querySelector("#type").value = asset.type;
+                                    document.querySelector("#status").value = asset.status;
+                                    document.getElementById("form3Example9").value = asset.locLattitude;
+                                    document.getElementById("form3Example90").value = asset.locLongitude;
+                                    document.getElementById("form3Example99").value = asset.hoaName;
+                                    // Set the values of other input fields here                                    
+                                };
+                                xhr.send();
+                            }
+                        </script>
                         <button type="button" class="btn btn-dark">Delete</button>
                         <button type="button" class="btn btn-dark">Dispose</button>
                         <button type="button" class="btn btn-dark">View History</button>
@@ -41,5 +64,6 @@
           
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     </div>
+    <div th:replace="~{assetActions}"></div>
   </body>
 </html>
