@@ -1,0 +1,23 @@
+
+
+.workboard {
+    width: 80vw; /* Set width to 50% of viewport width */
+    height: 80vh; /* Set height to 50% of viewport height */
+    background-color: rgb(78, 71, 71); /* Just for demonstration purposes */
+    position: absolute; /* Set position to absolute */
+    top: 50%; /* Set top to 50% */
+    left: 50%; /* Set left to 50% */
+    transform: translate(-50%, -50%); /* Use transform to center */
+
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+    }
+.card-registration .select-arrow {
+    top: 13px;
+}
