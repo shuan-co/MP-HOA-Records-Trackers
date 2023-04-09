@@ -17,18 +17,18 @@
                           <div class="col-xl-6">
                             <div class="card-body p-md-5 text-black">
                               <h3 class="mb-5 text-uppercase">Asset Information Update</h3>
-              
+                
                               <div class="row">
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
-                                    <input type="text" id="form3Example1m" readonly class="form-control form-control-lg" />
-                                    <label class="form-label" for="form3Example1m">Asset ID</label>
+                                    <input type="text" id="updateID" readonly class="form-control form-control-lg" />
+                                    <label class="form-label" for="updateID">Asset ID</label>
                                   </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
-                                    <input type="text" id="form3Example1n" class="form-control form-control-lg" />
-                                    <label class="form-label" for="form3Example1n">Asset Name</label>
+                                    <input type="text" id="updateName" class="form-control form-control-lg" />
+                                    <label class="form-label" for="updateName">Asset Name</label>
                                   </div>
                                 </div>
                               </div>
@@ -36,21 +36,21 @@
                               <div class="row">
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
-                                    <input type="date" id="form3Example1m1" class="form-control form-control-lg" />
-                                    <label class="form-label" for="form3Example1m1">Acquisition Date</label>
+                                    <input type="date" id="updateDate" class="form-control form-control-lg" />
+                                    <label class="form-label" for="updateDate">Acquisition Date</label>
                                   </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
-                                    <input type="number" id="form3Example1n1" class="form-control form-control-lg" />
-                                    <label class="form-label" for="form3Example1n1">Asset Value</label>
+                                    <input type="number" id="updateValue" class="form-control form-control-lg" />
+                                    <label class="form-label" for="updateValue">Asset Value</label>
                                   </div>
                                 </div>
                               </div>
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="form3Example8" class="form-control form-control-lg" />
-                                <label class="form-label" for="form3Example8">Asset Description</label>
+                                <input type="text" id="updateDescription" class="form-control form-control-lg" />
+                                <label class="form-label" for="updateDescription">Asset Description</label>
                               </div>
               
                               <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
@@ -58,20 +58,20 @@
                                 <h6 class="mb-0 me-4">For Rent? </h6>
               
                                 <div class="form-check form-check-inline mb-0 me-4">
-                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="yesRent"
+                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="updateYesRent"
                                     value="yes" />
-                                  <label class="form-check-label" for="yesRent">Yes</label>
+                                  <label class="form-check-label" for="updateYesRent">Yes</label>
                                 </div>
               
                                 <div class="form-check form-check-inline mb-0 me-4">
-                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="noRent"
+                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="updateNoRent"
                                     value="no" />
-                                  <label class="form-check-label" for="noRent">No</label>
+                                  <label class="form-check-label" for="updateNoRent">No</label>
                                 </div>
                                 <div class="row" style="margin-top: 2.5vh;">
                                     <div class="col-md-5 mb-4">
                   
-                                      <select class="select" id="type">
+                                      <select class="select" id="updateType">
                                         <option disabled selected>Type</option>
                                         <option value="P">Property</option>
                                         <option value="E">Equipment</option>
@@ -81,7 +81,7 @@
                   
                                     </div>
                                     <div class="col-md-6 mb-4">
-                                      <select class="select" id="status">
+                                      <select class="select" id="updateStatus">
                                         <option disabled selected>Status</option>
                                         <option value="W">Working</option>
                                         <option value="D">Deteriorated</option>
@@ -95,36 +95,36 @@
               
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="form3Example9" class="form-control form-control-lg" />
-                                <label class="form-label" for="form3Example9">Location Lattitude</label>
+                                <input type="text" id="updateLat" class="form-control form-control-lg" />
+                                <label class="form-label" for="updateLat">Location Lattitude</label>
                               </div>
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="form3Example90" class="form-control form-control-lg" />
-                                <label class="form-label" for="form3Example90">Location Longtitude</label>
+                                <input type="text" id="updateLong" class="form-control form-control-lg" />
+                                <label class="form-label" for="updateLong">Location Longtitude</label>
                               </div>
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="form3Example99" class="form-control form-control-lg" />
-                                <label class="form-label" for="form3Example99">Home Owner Association Name</label>
+                                <input type="text" id="updateHOA" class="form-control form-control-lg" />
+                                <label class="form-label" for="updateHOA">Home Owner Association Name</label>
                               </div>
               
                               <div class="d-flex justify-content-end pt-3">
-                                <button type="button" class="btn btn-warning btn-lg ms-2" onclick="addAsset()">Submit Form</button>
+                                <button type="button" class="btn btn-warning btn-lg ms-2" onclick="updateAsset()">Submit Form</button>
                                 <script>
-                                    function addAsset() {
+                                    function updateAsset() {
                                         const asset = {
-                                            id: document.getElementById('form3Example1m').value,
-                                            name: document.getElementById('form3Example1n').value,
-                                            acquisitionDate: document.getElementById('form3Example1m1').value,
-                                            assetValue: document.getElementById('form3Example1n1').value,
-                                            description: document.getElementById('form3Example8').value,
-                                            forrent: document.getElementById('yesRent').checked,
-                                            type: document.getElementById('type').value,
-                                            status: document.getElementById('status').value,
-                                            locLattitude: document.getElementById('form3Example9').value,
-                                            locLongitude: document.getElementById('form3Example90').value,
-                                            hoaName: document.getElementById('form3Example99').value
+                                            id: document.getElementById('updateID').value,
+                                            name: document.getElementById('updateName').value,
+                                            acquisitionDate: document.getElementById('updateDate').value,
+                                            assetValue: document.getElementById('updateValue').value,
+                                            description: document.getElementById('updateDescription').value,
+                                            forrent: document.getElementById('updateYesRent').checked,
+                                            type: document.getElementById('updateType').value,
+                                            status: document.getElementById('updateStatus').value,
+                                            locLattitude: document.getElementById('updateLat').value,
+                                            locLongitude: document.getElementById('updateLong').value,
+                                            hoaName: document.getElementById('updateHOA').value
                                         };
                                         fetch('/addAsset', {
                                             method: 'POST',
@@ -150,4 +150,152 @@
             </section>
         </div>
     </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal custom-modal fade" id="assetInsert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+          <!-- REFERENCE: https://mdbootstrap.com/docs/standard/extended/registration/ -->
+          <section class="h-100 bg-dark">
+              <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                  <div class="col">
+                    <div class="card card-registration my-4">
+                      <div class="row g-0">
+                        <div class="col-xl-6 d-none d-xl-block">
+                          <img src="dashboard_resources/assetInsert.png"
+                            alt="Sample photo" class="img-fluid"
+                            style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                        </div>
+                        <div class="col-xl-6">
+                          <div class="card-body p-md-5 text-black">
+                            <h3 class="mb-5 text-uppercase">Insert New Asset</h3>
+            
+                            <div class="row">
+                              <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                  <input type="text" id="newID" readonly class="form-control form-control-lg" />
+                                  <label class="form-label" for="newID" >Asset ID</label>
+                                </div>
+                              </div>
+                              <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                  <input type="text" id="newName" class="form-control form-control-lg" />
+                                  <label class="form-label" for="newName">Asset Name</label>
+                                </div>
+                              </div>
+                            </div>
+            
+                            <div class="row">
+                              <div class="col-md-6 mb-4">
+                                <div class="form-outline">
+                                  <input type="number" id="newValue" class="form-control form-control-lg" />
+                                  <label class="form-label" for="newValue">Asset Value</label>
+                                </div>
+                              </div>
+                            </div>
+            
+                            <div class="form-outline mb-4">
+                              <input type="text" id="newDescription" class="form-control form-control-lg" />
+                              <label class="form-label" for="newDescription">Asset Description</label>
+                            </div>
+            
+                            <div class="d-md-flex justify-content-start align-items-center mb-4 py-2">
+            
+                              <h6 class="mb-0 me-4">For Rent? </h6>
+            
+                              <div class="form-check form-check-inline mb-0 me-4">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="newYesRent"
+                                  value="yes" />
+                                <label class="form-check-label" for="newYesRent">Yes</label>
+                              </div>
+            
+                              <div class="form-check form-check-inline mb-0 me-4">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="newNoRent"
+                                  value="no" />
+                                <label class="form-check-label" for="newNoRent">No</label>
+                              </div>
+                              <div class="row" style="margin-top: 2.5vh;">
+                                  <div class="col-md-5 mb-4">
+                
+                                    <select class="select" id="newType">
+                                      <option disabled selected>Type</option>
+                                      <option value="P">Property</option>
+                                      <option value="E">Equipment</option>
+                                      <option value="F">F&F</option>
+                                      <option value="O">Others</option>
+                                    </select>
+                
+                                  </div>
+                                  <div class="col-md-6 mb-4">
+                                    <select class="select" id="newStatus">
+                                      <option disabled selected>Status</option>
+                                      <option value="W">Working</option>
+                                      <option value="D">Deteriorated</option>
+                                      <option value="P">For Repair</option>
+                                    </select>
+                
+                                  </div>
+                                </div>
+                            </div>
+            
+            
+                            <div class="form-outline mb-4">
+                              <input type="text" id="newLat" class="form-control form-control-lg" />
+                              <label class="form-label" for="newLat">Location Lattitude</label>
+                            </div>
+            
+                            <div class="form-outline mb-4">
+                              <input type="text" id="newLong" class="form-control form-control-lg" />
+                              <label class="form-label" for="newLong">Location Longtitude</label>
+                            </div>
+            
+                            <div class="form-outline mb-4">
+                              <input type="text" id="newHOA" class="form-control form-control-lg" />
+                              <label class="form-label" for="newHOA">Home Owner Association Name</label>
+                            </div>
+            
+                            <div class="d-flex justify-content-end pt-3">
+                              <button type="button" class="btn btn-warning btn-lg ms-2" onclick="newAsset();">Submit Form</button>
+                              <script>
+                                  function newAsset() {
+                                      const asset = {
+                                          id: document.getElementById('newID').value,
+                                          name: document.getElementById('newName').value,
+                                          acquisitionDate: "0000-00-00",
+                                          assetValue: document.getElementById('newValue').value,
+                                          description: document.getElementById('newDescription').value,
+                                          forrent: document.getElementById('newYesRent').checked,
+                                          type: document.getElementById('newType').value,
+                                          status: document.getElementById('newStatus').value,
+                                          locLattitude: document.getElementById('newLat').value,
+                                          locLongitude: document.getElementById('newLong').value,
+                                          hoaName: document.getElementById('newHOA').value
+                                      };
+                                      fetch('/insertAsset', {
+                                          method: 'POST',
+                                          headers: {
+                                              'Content-Type': 'application/json'
+                                          },
+                                          body: JSON.stringify(asset)
+                                      });
+                                      setTimeout(function() {
+                                        location.reload();
+                                      }, 2000);
+                                  }
+                              </script>
+                            </div>
+            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </section>
+      </div>
+  </div>
 </div>
