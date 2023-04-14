@@ -88,7 +88,6 @@
                                         <option value="P">For Repair</option>
                                         <option value="S">For Disposal</option>
                                       </select>
-                  
                                     </div>
                                   </div>
                               </div>
@@ -126,7 +125,7 @@
                                             locLongitude: document.getElementById('updateLong').value,
                                             hoaName: document.getElementById('updateHOA').value
                                         };
-                                        fetch('/addAsset', {
+                                        fetch('/updateAsset', {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/json'
@@ -139,7 +138,7 @@
                                     }
                                 </script>
                               </div>
-              
+
                             </div>
                           </div>
                         </div>

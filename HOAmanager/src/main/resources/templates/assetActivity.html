@@ -11,62 +11,56 @@
 <body>
 <div th:replace="~{navbar}"></div>
 <div th:replace="~{deleteDisposeRow}"></div>
-<div th:replace="~{assetActions}"></div>
+<div th:replace="~{assetActivityActions('${asset_id}')}" ></div>
 
 <div class="workboard table-responsive">
     <table class="table table-dark">
         <thead class="fs-3">
-        <th scope="col" style="max-width: 8vh;">Asset ID</th>
-        <th scope="col" class="table-active">Name</th>
-        <th scope="col">Description</th>
-        <th scope="col" class="table-active">Type</th>
+        <th scope="col" style="max-width: 8vh;">Activity Date/th>
+        <th scope="col" class="table-active">Description</th>
         <th scope="col">Status</th>
+        <th scope="col" class="table-active">Cost</th>
         <th scope="col" class="table-active" style="max-width: 20vh;">Action
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#assetInsert" onclick="insertAsset()">Insert</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#assetActivityInsert" onclick="insertAsset()">Insert</button>
             <script>
                 function insertAsset(){
-                    console.log("Hello World!");
                     // Bind click event to Confirm button
                     var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/myEndpoint3");
+                    xhr.open("GET", "/getOfficers");
                     xhr.onload = function() {
-                        var nextID = xhr.response;
-                        document.getElementById("newID").value = nextID;
+                        const response = xhr.response;
+                        var officers = JSON.parse(response);
+                        const dropbox = document.getElementById("approvingOfficers");
+                        dropbox.innerHTML = "";
+                        //Populate dropdown
+                        officers.forEach(function(officer) {
+                            const option = document.createElement("option");
+                            option.value = officer.hoId + "," + officer.position + "," + officer.electionDate;
+                            option.text = officer.firstName + " " + officer.lastName;
+                            dropbox.appendChild(option);
+                        });
                     }
                     xhr.send();
-
                 }
             </script>
         </th>
         </thead>
         <tbody>
         <tr class="fs-4" th:each="row : ${rows}">
-            <th scope="row" style="max-width: 8vh;" th:text="${row.id}"></th>
-            <td colspan="1" class="table-active" th:text="${row.name}"></td>
-            <td colspan="1" th:text="${row.description}"></td>
-            <td colspan="1" class="table-active" th:text="${row.type}"></td>
-            <td colspan="1" th:text="${row.status}" ></td>
+            <th scope="row" style="max-width: 8vh;" th:text="${row.getActivityDate()}"></th>
+            <td colspan="1" class="table-active" th:text="${row.getDescription()}"></td>
+            <td colspan="1" th:text="${row.getStatus()}"></td>
+            <td colspan="1" class="table-active" th:text="${row.getCost()}"></td>
             <th scope="col" class="table-active"  style="max-width: 20vh;">
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetUpdate" th:attr="data-id=${row.id}" th:disabled="${row.status == 'X'}" onclick="updateData(this.getAttribute('data-id'));">Update</button>
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetUpdate" th:attr="data-id=${row.getId()}"  onclick="updateData(this.getAttribute('data-id'));">Update</button>
                     <script>
                         function updateData(id) {
                             var xhr = new XMLHttpRequest();
-                            xhr.open("GET", "/myEndpoint?id=" + id);
+                            xhr.open("GET", "/getAssetActivity?id=" + id);
                             xhr.onload = function() {
-                                var asset = JSON.parse(xhr.response); // parse the JSON response
-                                document.getElementById("updateID").value = asset.id; // set the value of the input field to the asset ID
-                                document.getElementById("updateName").value = asset.name;
-                                document.getElementById("updateDate").value = asset.acquisitionDate;
-                                document.getElementById("updateValue").value = asset.assetValue;
-                                document.getElementById("updateDescription").value = asset.description;
-                                document.getElementById("updateYesRent").checked = asset.forrent;
-                                document.getElementById("updateNoRent").checked = !asset.forrent;
-                                document.querySelector("#updateType").value = asset.type;
-                                document.querySelector("#updateStatus").value = asset.status;
-                                document.getElementById("updateLat").value = asset.locLattitude;
-                                document.getElementById("updateLong").value = asset.locLongitude;
-                                document.getElementById("updateHOA").value = asset.hoaName;
+                                var assetActivity = JSON.parse(xhr.response); // parse the JSON response
+                                document.getElementById("updateID").value = assetActivity.id// set the value of the input field to the asset ID
                                 // Set the values of other input fields here
                             };
                             xhr.send();
@@ -100,7 +94,6 @@
                             });
                         }
                     </script>
-                    <button type="button" class="btn btn-dark" th:onclick="'window.location.href=\'/assetActivity?id=' + ${row.id} + '\''">View History</button>
                 </div>
             </th>
         </tr>

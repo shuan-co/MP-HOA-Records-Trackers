@@ -24,13 +24,13 @@ public class AssetUpdateController {
     public AssetTable myEndpoint(@RequestParam int id) {
         Map<String, Object> assets = jdbcTemplate.queryForList("SELECT * FROM assets WHERE asset_id = ?", id).get(0);
         AssetTable asset =  new AssetTable((int) assets.get("asset_id"), (String) assets.get("asset_name"), (String) assets.get("asset_description"),
-                              (String) assets.get("type_asset"), (String) assets.get("status"), (java.sql.Date) assets.get("acquisition_date"), 
-                              (Boolean) assets.get("forrent"), (BigDecimal) assets.get("asset_value"), (BigDecimal) assets.get("loc_lattitude"), 
+                              (String) assets.get("type_asset"), (String) assets.get("status"), (java.sql.Date) assets.get("acquisition_date"),
+                              (Boolean) assets.get("forrent"), (BigDecimal) assets.get("asset_value"), (BigDecimal) assets.get("loc_lattitude"),
                               (BigDecimal) assets.get("loc_longiture"), (String) assets.get("hoa_name"));
 
         return asset;
     }
-    
+
     @GetMapping("/myEndpoint2")
     public void myEndpoint2(@RequestParam int id) {
         jdbcTemplate.update("DELETE FROM assets WHERE asset_id = ? AND NOT EXISTS (SELECT 1 FROM asset_transactions WHERE asset_id = ?)", id, id);
@@ -53,10 +53,10 @@ public class AssetUpdateController {
     }
 
 
-    @PostMapping("/addAsset")
-    public void addAsset(@RequestBody AssetTable asset) throws ScriptException {
+    @PostMapping("/updateAsset")
+    public void updateAsset(@RequestBody AssetTable asset) throws ScriptException {
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("js");
-        try 
+        try
         {
         String update = "UPDATE assets " +
                 "SET asset_name = ?, " +
@@ -71,8 +71,8 @@ public class AssetUpdateController {
                 "    hoa_name = ? " +
                 "WHERE asset_id = ?";
                 jdbcTemplate.update(update, asset.getName(), asset.getDescription(), asset.getAcquisitionDate(), asset.isForrent(), asset.getAssetValue(), asset.getType(), asset.getStatus(), asset.getLocLattitude(), asset.getLocLongitude(), asset.getHoaName(), asset.getId());
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             String[] parts = e.getMessage().split(";");
             engine.eval("alert('" + parts[parts.length - 1] + "');");
