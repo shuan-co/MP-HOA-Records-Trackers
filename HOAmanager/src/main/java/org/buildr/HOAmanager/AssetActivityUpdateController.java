@@ -18,13 +18,14 @@ public class AssetActivityUpdateController {
     private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/getAssetActivity")
-    public AssetActivityTable getAssetAcitivity(@RequestParam int id) {
-        var assetActivities = jdbcTemplate.queryForList("SELECT * FROM asset_activity WHERE asset_id = ?;", id).get(0);
+    public AssetActivityTable getAssetActivity(@RequestParam int id, @RequestParam java.sql.Date activityDate) {
+        var assetActivities = jdbcTemplate.queryForList("SELECT * FROM asset_activity WHERE asset_id = ? AND activity_date = ?;", id, activityDate).get(0);
         var officer = jdbcTemplate.queryForList("SELECT ast.trans_hoid, ast.trans_position, ast.trans_electiondate, p.firstname, p.lastname\n" +
                 "FROM asset_activity aa\n" +
                 "JOIN asset_transactions ast ON ast.asset_id = aa.asset_id AND\n" +
                 "                ast.transaction_date = aa.activity_date\n" +
-                "JOIN people p ON p.peopleid = ast.trans_hoid;", id).get(0);
+                "JOIN people p ON p.peopleid = ast.trans_hoid\n" +
+                "WHERE aa.asset_id = ? AND aa.activity_date = ?;", id, activityDate).get(0);
         var transOfficer = new Officer((int) officer.get("trans_hoid"),
                 (String)officer.get("trans_position"),
                 (java.sql.Date)officer.get("trans_electiondate"),

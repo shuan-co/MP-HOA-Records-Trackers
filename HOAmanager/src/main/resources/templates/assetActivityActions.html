@@ -1,5 +1,5 @@
 <!-- INSERTING -->
-<div class="modal custom-modal fade" id="assetActivityInsert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div th:fragment="assetActivityActions(asset_id)" class="modal custom-modal fade" id="assetActivityInsert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <section class="h-100 bg-dark">
@@ -49,7 +49,7 @@
                       </div>
 
                       <div class="d-flex justify-content-end pt-3">
-                        <button type="button" th:attr="data-id=${asset_id}" class="btn btn-warning btn-lg ms-2" onclick="newAssetActivity(this.getAttribute('data-id'));">Submit Form</button>
+                        <button type="button" th:data-id="${asset_id}" class="btn btn-warning btn-lg ms-2" onclick="newAssetActivity(this.getAttribute('data-id'));">Submit Form</button>
                         <script>
                           function newAssetActivity(id) {
                             const activityDate =  document.getElementById('activityDate').value
@@ -61,7 +61,7 @@
                               alert("Activity date must not be empty!");
                               return;
                             }
-                            else if (!isNaN(cost)) {
+                            else if (isNaN(cost)) {
                               alert("Cost must be a number");
                               return;
                             }
@@ -122,3 +122,85 @@
 </div>
 
 <!-- UPDATING -->
+<div th:fragment="assetActivityActions(asset_id)" class="modal custom-modal fade" id="assetActivityUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <section class="h-100 bg-dark">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card card-registration my-4">
+                <div class="row g-0">
+                  <div class="col-xl-6 d-none d-xl-block">
+                    <img src="dashboard_resources/assetUpdate.png"
+                         alt="Sample photo" class="img-fluid"
+                         style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="card-body p-md-5 text-black">
+                      <h3 class="mb-5 text-uppercase">Update Asset Activity</h3>
+
+                      <div class="form-outline mb-4">
+                        <input type="date" id="updateActivityDate" class="form-control form-control-lg" required/>
+                        <label class="form-label" for="updateActivityDate">Activity Date</label>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="date" id="updateTentativeStart" class="form-control form-control-lg" />
+                        <label class="form-label" for="updateTentativeStart">Tentative Start</label>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="date" id="updateTentativeEnd" class="form-control form-control-lg" />
+                        <label class="form-label" for="updateTentativeEnd">Tentative End</label>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="date" id="updateActualStart" class="form-control form-control-lg" />
+                        <label class="form-label" for="updateActualStart">Actual Start</label>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="date" id="updateActualEnd" class="form-control form-control-lg" />
+                        <label class="form-label" for="updateActualEnd">Actual End</label>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="text" id="updateActivityDescription" class="form-control form-control-lg" />
+                        <label class="form-label" for="updateActivityDescription">Description</label>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="text" id="updateActivityCost" class="form-control form-control-lg" />
+                        <label class="form-label" for="updateActivityCost">Cost</label>
+                      </div>
+
+                      <div class="col-md-6 mb-4">
+                        <select class="select" id="updateApprovingOfficers" required>
+                        </select>
+                      </div>
+
+                      <div class="col-md-6 mb-4">
+                        <select class="select" id="updateStatus" required>
+                          <option disabled selected>Status</option>
+                          <option value="S">Scheduled</option>
+                          <option value="O">Ongoing</option>
+                          <option value="C">Complete</option>
+                        </select>
+                      </div>
+
+                      <div class="d-flex justify-content-end pt-3">
+                        <button type="button" th:attr="data-id=${assetId}" class="btn btn-warning btn-lg ms-2" onclick="updateAssetActivity(this.getAttribute('data-id'));">Update Form</button>
+                        <!-- WIP -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

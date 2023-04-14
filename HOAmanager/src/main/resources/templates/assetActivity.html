@@ -11,7 +11,7 @@
 <body>
 <div th:replace="~{navbar}"></div>
 <div th:replace="~{deleteDisposeRow}"></div>
-<div th:replace="~{assetActivityActions(asset_id='${asset_id}')}" ></div>
+<div th:replace="~{assetActivityActions :: assetActivityActions(asset_id=${asset_id})}"></div>
 
 <div class="workboard table-responsive">
     <table class="table table-dark">
@@ -32,7 +32,6 @@
                         var officers = JSON.parse(response);
                         const dropbox = document.getElementById("approvingOfficers");
                         dropbox.innerHTML = "";
-                        //Populate dropdown
                         officers.forEach(function(officer) {
                             const option = document.createElement("option");
                             option.value = officer.hoId + "," + officer.position + "," + officer.electionDate;
@@ -47,23 +46,58 @@
         </thead>
         <tbody>
         <tr class="fs-4" th:each="row : ${rows}">
-            <th scope="row" style="max-width: 8vh;" th:text="${row.getActivityDate()}"></th>
+            <th scope="row" style="max-width: 8vh;" th:text="${row.getActivityDate()}" th:attr="activity-date=${row.getActivityDate()}"></th>
             <td colspan="1" class="table-active" th:text="${row.getDescription()}"></td>
             <td colspan="1" th:text="${row.getStatus()}"></td>
             <td colspan="1" class="table-active" th:text="${row.getCost()}"></td>
             <th scope="col" class="table-active"  style="max-width: 20vh;">
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetUpdate" th:attr="data-id=${row.getId()}"  onclick="updateData(this.getAttribute('data-id'));">Update</button>
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetActivityUpdate" th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}"  onclick="updateData(this.getAttribute('data-id'), this.getAttribute('data-activity-date'));">Update</button>
                     <script>
-                        function updateData(id) {
-                            var xhr = new XMLHttpRequest();
-                            xhr.open("GET", "/getAssetActivity?id=" + id);
-                            xhr.onload = function() {
-                                var assetActivity = JSON.parse(xhr.response); // parse the JSON response
-                                document.getElementById("updateID").value = assetActivity.id// set the value of the input field to the asset ID
-                                // Set the values of other input fields here
-                            };
-                            xhr.send();
+                        function updateData(id, activityDate) {
+                           const xhr = new XMLHttpRequest();
+                           xhr.open("GET", "/getAssetActivity?id=" + id + "&activityDate=" + activityDate);
+                           xhr.onload = function() {
+                               const assetActivity = JSON.parse(xhr.response); // parse the JSON response
+                               document.getElementById("updateActivityDate").value = assetActivity.activityDate;
+                               document.getElementById("updateTentativeStart").value = assetActivity.tStart;
+                               document.getElementById("updateTentativeEnd").value = assetActivity.tEnd;
+                               document.getElementById("updateActualStart").value = assetActivity.aStart;
+                               document.getElementById("updateActualEnd").value = assetActivity.aEnd;
+                               document.getElementById("updateActivityDescription").value = assetActivity.description;
+                               document.getElementById("updateActivityCost").value = assetActivity.cost;
+                               document.getElementById("updateStatus").value = assetActivity.status;
+                               const updateStatusSelect = document.getElementById("updateStatus");
+                               const assetActivityStatus = assetActivity.status;
+                               // Select the status!
+                               for (let i = 0; i < 3; i++) {
+                                   const option = updateStatusSelect.options[i];
+                                   if (option.value === assetActivityStatus) {
+                                       option.selected = true;
+                                       break;
+                                   }
+                               }
+
+                               //updating the officers
+                               const xhrOfficers = new XMLHttpRequest();
+                               xhrOfficers.open("GET", "/getOfficers");
+                               xhrOfficers.onload = function() {
+                                   const officers = JSON.parse(xhrOfficers.response);
+                                   const dropbox = document.getElementById("updateApprovingOfficers");
+                                   dropbox.innerHTML = "";
+                                   // Populate dropdown
+                                   officers.forEach(function(officer) {
+                                       const option = document.createElement("option");
+                                       option.value = officer.hoId + "," + officer.position + "," + officer.electionDate;
+                                       option.text = officer.firstName + " " + officer.lastName;
+                                       if (officer.firstName === assetActivity.transOfficer.firstName && officer.lastName === assetActivity.transOfficer.lastName) {
+                                           option.selected = true; // select the current approving officer
+                                       }
+                                       dropbox.appendChild(option);
+                                   });
+                               }
+                               xhrOfficers.send();
+                           };xhr.send();
                         }
                     </script>
                     <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:attr="data-id=${row.id}" th:disabled="${row.status == 'X'}" onclick="deleteRow(this.getAttribute('data-id'))">Delete</button>
