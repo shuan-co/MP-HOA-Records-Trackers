@@ -11,7 +11,7 @@
 <body>
 <div th:replace="~{navbar}"></div>
 <div th:replace="~{deleteDisposeRow}"></div>
-<div th:replace="~{assetActivityActions('${asset_id}')}" ></div>
+<div th:replace="~{assetActivityActions(asset_id='${asset_id}')}" ></div>
 
 <div class="workboard table-responsive">
     <table class="table table-dark">
