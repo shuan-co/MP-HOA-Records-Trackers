@@ -52,14 +52,15 @@
             <td colspan="1" class="table-active" th:text="${row.getCost()}"></td>
             <th scope="col" class="table-active"  style="max-width: 20vh;">
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetActivityUpdate" th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}"  onclick="updateData(this.getAttribute('data-id'), this.getAttribute('data-activity-date'));">Update</button>
+                    <button id = "updateActivityButton" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetActivityUpdate" th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}"  onclick="updateData(this.getAttribute('data-id'), this.getAttribute('data-activity-date'));">Update</button>
                     <script>
                         function updateData(id, activityDate) {
                            const xhr = new XMLHttpRequest();
+                           console.log(id, activityDate);
                            xhr.open("GET", "/getAssetActivity?id=" + id + "&activityDate=" + activityDate);
                            xhr.onload = function() {
                                const assetActivity = JSON.parse(xhr.response); // parse the JSON response
-                               document.getElementById("updateActivityDate").value = assetActivity.activityDate;
+                               document.getElementById("updateActivityDate").value = activityDate;
                                document.getElementById("updateTentativeStart").value = assetActivity.tStart;
                                document.getElementById("updateTentativeEnd").value = assetActivity.tEnd;
                                document.getElementById("updateActualStart").value = assetActivity.aStart;
@@ -69,6 +70,13 @@
                                document.getElementById("updateStatus").value = assetActivity.status;
                                const updateStatusSelect = document.getElementById("updateStatus");
                                const assetActivityStatus = assetActivity.status;
+
+                               //Bawal ang complete if hindi ongoing
+
+                               if(assetActivityStatus === "S") {
+                                   updateStatusSelect.options[2].disabled = true;
+                               }
+
                                // Select the status!
                                for (let i = 0; i < 3; i++) {
                                    const option = updateStatusSelect.options[i];
@@ -100,27 +108,31 @@
                            };xhr.send();
                         }
                     </script>
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:attr="data-id=${row.id}" th:disabled="${row.status == 'X'}" onclick="deleteRow(this.getAttribute('data-id'))">Delete</button>
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#disposeAssetActivity"  th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}" onclick="disposeRow(this.getAttribute('data-id'), this.getAttribute('data-activity-date'))">Dispose</button>
                     <script>
-                        function deleteRow(id){
+                        function disposeRow(id, date){
+                            //Generate the officers
+                            const xhrOfficers = new XMLHttpRequest();
+                            xhrOfficers.open("GET", "/getPresident");
+                            var president = null
+                            xhrOfficers.onload = function() {
+                                president = JSON.parse(xhrOfficers.response);
+                                const label = document.getElementById("approvalLabel");
+                                label.textContent = "Approved By: " + president.firstName + " " + president.lastName;
+                            }
+                            xhrOfficers.send();
+
                             // Bind click event to Confirm button
-                            $('#staticBackdrop .btn-outline-danger').on('click', function() {
+                            $('#disposeAssetActivity .btn-outline-danger').on('click', function() {
+                                const checkBox = document.getElementById("presidentApproval");
+                                if (!checkBox.checked) {
+                                    alert("Please approve the disposal by checking the checkbox.");
+                                    return;
+                                }
                                 var xhr = new XMLHttpRequest();
-                                xhr.open("GET", "/myEndpoint2?id=" + id);
-                                xhr.send();
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 2000);
-                            });
-                        }
-                    </script>
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#disposeAsset" th:attr="data-id=${row.id}" th:disabled="${row.status == 'X'}" onclick="disposeRow(this.getAttribute('data-id'))">Dispose</button>
-                    <script>
-                        function disposeRow(id){
-                            // Bind click event to Confirm button
-                            $('#disposeAsset .btn-outline-danger').on('click', function() {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("GET", "/myEndpoint4?id=" + id);
+                                xhr.open("GET", "/disposeAssetActivity?id=" + id + "&activityDate=" + date
+                                + "&presidentId=" + president.hoId + "&presidentPosition=" + president.position +
+                                "&presidentElectionDate=" + president.electionDate);
                                 xhr.send();
                                 setTimeout(function() {
                                     location.reload();

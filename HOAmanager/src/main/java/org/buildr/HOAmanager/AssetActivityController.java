@@ -21,7 +21,9 @@ public class AssetActivityController {
     @GetMapping("/assetActivity")
     public String getAssetActivities(Model model, @RequestParam int id) {
         List<AssetActivityRow> rows = new ArrayList();
-        var query = jdbcTemplate.queryForList("SELECT * FROM asset_activity aa WHERE aa.asset_id = ?", id);
+        var query = jdbcTemplate.queryForList("SELECT * FROM asset_activity aa " +
+                "\nJOIN asset_transactions ast ON ast.asset_id = aa.asset_id AND ast.transaction_date = aa.activity_date" +
+                "\nWHERE aa.asset_id = ? AND ast.isdeleted = 0", id);
 
         for(var row : query) {
             var activityRow = new AssetActivityRow(

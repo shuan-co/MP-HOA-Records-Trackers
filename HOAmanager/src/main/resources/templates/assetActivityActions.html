@@ -61,20 +61,13 @@
                               alert("Activity date must not be empty!");
                               return;
                             }
-                            else if (isNaN(cost)) {
+                            else if (cost != "" && isNaN(cost)) {
                               alert("Cost must be a number");
                               return;
                             }
-                            else if (activityDate > tStart) {
-                              alert("Start cannot be before the activity date!");
-                              return;
-                            }
-                            else if (tStart > tEnd) {
+
+                            else if (tEnd < tStart && tStart != "" && tEnd != "") {
                               alert("Tentative start cannot be after the tentative end!");
-                              return;
-                            }
-                            else if(activityDate > tEnd) {
-                              alert("Tentative end cannot be before the activity date!");
                               return;
                             }
 
@@ -141,7 +134,7 @@
                       <h3 class="mb-5 text-uppercase">Update Asset Activity</h3>
 
                       <div class="form-outline mb-4">
-                        <input type="date" id="updateActivityDate" class="form-control form-control-lg" required/>
+                        <input type="date" id="updateActivityDate" class="form-control form-control-lg" disabled/>
                         <label class="form-label" for="updateActivityDate">Activity Date</label>
                       </div>
 
@@ -182,7 +175,6 @@
 
                       <div class="col-md-6 mb-4">
                         <select class="select" id="updateStatus" required>
-                          <option disabled selected>Status</option>
                           <option value="S">Scheduled</option>
                           <option value="O">Ongoing</option>
                           <option value="C">Complete</option>
@@ -190,7 +182,69 @@
                       </div>
 
                       <div class="d-flex justify-content-end pt-3">
-                        <button type="button" th:attr="data-id=${assetId}" class="btn btn-warning btn-lg ms-2" onclick="updateAssetActivity(this.getAttribute('data-id'));">Update Form</button>
+                        <button type="button" th:attr="data-id=${asset_id}" class="btn btn-warning btn-lg ms-2" onclick="updateAssetActivity(this.getAttribute('data-id'));">Update Form</button>
+                        <script>
+                          function updateAssetActivity(id) {
+                            const date = document.getElementById("updateActivityDate").value;
+                            const officer = document.getElementById('updateApprovingOfficers').value;
+                            const officerIdentifiers = officer.split(',');
+                            const activityStatus = document.getElementById('updateStatus').value;
+                            const activityCost = document.getElementById('updateActivityCost').value;
+                            const tStart = document.getElementById('updateTentativeStart').value;
+                            const tEnd = document.getElementById('updateTentativeEnd').value
+                            const aStart = document.getElementById('updateActualStart').value
+                            const aEnd = document.getElementById('updateActualEnd').value
+
+                            console.log(activityStatus)
+                            if (activityStatus === "C") {
+                              if(activityCost === "") {
+                                alert("Please input th cost when completing an activity!")
+                                return;
+                              }
+                              if(isNaN(activityCost)){
+                                alert("The cost must be a number!")
+                                return;
+                              }
+                              if(tStart === "" || tEnd === "" || aStart === "" || aEnd === "") {
+                                alert("Please provide an input for all dates")
+                                return;
+                              }
+
+                              if(tEnd < tStart || aEnd < aStart) {
+                                alert("End dates should never be less than the start!")
+                                return;
+                              }
+                            }
+                            const assetActivity = {
+                              id: id,
+                              activityDate: date,
+                              tStart: tStart,
+                              tEnd: tEnd,
+                              aStart: aStart,
+                              aEnd: aEnd,
+                              description: document.getElementById('updateActivityDescription').value,
+                              cost: activityCost,
+                              status: activityStatus,
+                              transOfficer: {
+                                hoId: officerIdentifiers[0],
+                                position: officerIdentifiers[1],
+                                electionDate: officerIdentifiers[2],
+                                firstName: "",
+                                lastName: "",
+                              }
+                            };
+                            fetch('/updateAssetActivity', {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify(assetActivity)
+                            });
+                            setTimeout(function() {
+                              location.reload();
+                            }, 2000);
+                          }
+                        </script>
                         <!-- WIP -->
                       </div>
                     </div>
