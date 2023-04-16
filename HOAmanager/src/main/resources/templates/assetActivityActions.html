@@ -38,7 +38,7 @@
                       </div>
 
                       <div class="form-outline mb-4">
-                        <input type="text" id="activityCost" class="form-control form-control-lg" />
+                        <input type="number" id="activityCost" class="form-control form-control-lg" />
                         <label class="form-label" for="activityCost">Cost</label>
                       </div>
 
@@ -59,10 +59,6 @@
 
                             if (activityDate == "") {
                               alert("Activity date must not be empty!");
-                              return;
-                            }
-                            else if (cost != "" && isNaN(cost)) {
-                              alert("Cost must be a number");
                               return;
                             }
 
@@ -164,7 +160,7 @@
                       </div>
 
                       <div class="form-outline mb-4">
-                        <input type="text" id="updateActivityCost" class="form-control form-control-lg" />
+                        <input type="number" id="updateActivityCost" class="form-control form-control-lg" />
                         <label class="form-label" for="updateActivityCost">Cost</label>
                       </div>
 
@@ -199,10 +195,6 @@
                             if (activityStatus === "C") {
                               if(activityCost === "") {
                                 alert("Please input th cost when completing an activity!")
-                                return;
-                              }
-                              if(isNaN(activityCost)){
-                                alert("The cost must be a number!")
                                 return;
                               }
                               if(tStart === "" || tEnd === "" || aStart === "" || aEnd === "") {

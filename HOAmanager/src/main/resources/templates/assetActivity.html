@@ -16,17 +16,17 @@
 <div class="workboard table-responsive">
     <table class="table table-dark">
         <thead class="fs-3">
-        <th scope="col" style="max-width: 8vh;">Activity Date/th>
+        <th scope="col" style="max-width: 8vh;">Activity Date</th>
         <th scope="col" class="table-active">Description</th>
         <th scope="col">Status</th>
         <th scope="col" class="table-active">Cost</th>
         <th scope="col" class="table-active" style="max-width: 20vh;">Action
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#assetActivityInsert" onclick="insertAsset()">Insert</button>
+            <button th:attr="hoa-name=${hoa}" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#assetActivityInsert" onclick=insertAssetActivity(this.getAttribute("hoa-name"))>Insert</button>
             <script>
-                function insertAsset(){
+                function insertAssetActivity(hoa){
                     // Bind click event to Confirm button
                     var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/getOfficers");
+                    xhr.open("GET", "/getOfficers?hoaName=" + hoa);
                     xhr.onload = function() {
                         const response = xhr.response;
                         var officers = JSON.parse(response);
@@ -52,9 +52,10 @@
             <td colspan="1" class="table-active" th:text="${row.getCost()}"></td>
             <th scope="col" class="table-active"  style="max-width: 20vh;">
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button id = "updateActivityButton" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetActivityUpdate" th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}"  onclick="updateData(this.getAttribute('data-id'), this.getAttribute('data-activity-date'));">Update</button>
+                    <button id = "updateActivityButton" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#assetActivityUpdate" th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}, hoa-name=${hoa}"  onclick="updateData(this.getAttribute('data-id'), this.getAttribute('data-activity-date'),
+                    this.getAttribute('hoa-name'));">Update</button>
                     <script>
-                        function updateData(id, activityDate) {
+                        function updateData(id, activityDate, hoaName) {
                            const xhr = new XMLHttpRequest();
                            console.log(id, activityDate);
                            xhr.open("GET", "/getAssetActivity?id=" + id + "&activityDate=" + activityDate);
@@ -88,7 +89,7 @@
 
                                //updating the officers
                                const xhrOfficers = new XMLHttpRequest();
-                               xhrOfficers.open("GET", "/getOfficers");
+                               xhrOfficers.open("GET", "/getOfficers?hoaName=" + hoaName);
                                xhrOfficers.onload = function() {
                                    const officers = JSON.parse(xhrOfficers.response);
                                    const dropbox = document.getElementById("updateApprovingOfficers");
@@ -108,12 +109,13 @@
                            };xhr.send();
                         }
                     </script>
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#disposeAssetActivity"  th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}" onclick="disposeRow(this.getAttribute('data-id'), this.getAttribute('data-activity-date'))">Dispose</button>
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#disposeAssetActivity"  th:attr="data-id=${row.getId()}, data-activity-date=${row.getActivityDate()}, hoa-name=${hoa}" onclick="disposeRow(this.getAttribute('data-id'), this.getAttribute('data-activity-date'),
+                    this.getAttribute('hoa-name'))">Dispose</button>
                     <script>
-                        function disposeRow(id, date){
+                        function disposeRow(id, date, hoaName){
                             //Generate the officers
                             const xhrOfficers = new XMLHttpRequest();
-                            xhrOfficers.open("GET", "/getPresident");
+                            xhrOfficers.open("GET", "/getPresident?hoaName=" + hoaName);
                             var president = null
                             xhrOfficers.onload = function() {
                                 president = JSON.parse(xhrOfficers.response);
