@@ -36,7 +36,12 @@ public class AssetActivityController {
             rows.add(activityRow);
         }
 
+        var hoaName = jdbcTemplate.queryForList("SELECT * FROM asset_activity ast\n" +
+                "JOIN assets a ON a.asset_id = ast.asset_id\n" +
+                "WHERE a.asset_id = ?\n" +
+                "GROUP BY a.asset_id;", id).get(0).get("hoa_name");
         model.addAttribute("asset_id", id);
+        model.addAttribute("hoa", hoaName);
         model.addAttribute("rows", rows);
         return "assetActivity";
     }

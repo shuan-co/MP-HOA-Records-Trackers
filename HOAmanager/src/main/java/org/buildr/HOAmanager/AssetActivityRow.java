@@ -12,6 +12,7 @@ public class AssetActivityRow {
     private BigDecimal cost;
 
     private String status;
+    private String hoa;
 
     public Date getActivityDate() {
         return activityDate;

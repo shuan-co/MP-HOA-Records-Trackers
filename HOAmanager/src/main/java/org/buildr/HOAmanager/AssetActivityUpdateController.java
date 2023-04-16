@@ -48,11 +48,14 @@ public class AssetActivityUpdateController {
     }
 
     @GetMapping("/getOfficers")
-    public List<Officer> getOfficers() {
+    public List<Officer> getOfficers(@RequestParam String hoaName) {
         var officers = new ArrayList<Officer>();
-        var result = jdbcTemplate.queryForList("SELECT * FROM officer o JOIN homeowner h ON o.ho_id = h.ho_id " +
-                "JOIN people p ON p.peopleid = h.ho_id " +
-                "WHERE o.end_date >= NOW();");
+        var result = jdbcTemplate.queryForList("SELECT * FROM officer o JOIN homeowner h ON o.ho_id = h.ho_id\n" +
+                "JOIN people p ON p.peopleid = h.ho_id\n" +
+                "JOIN properties pr ON pr.ho_id = h.ho_id\n" +
+                "JOIN hoa ON hoa.hoa_name = pr.hoa_name\n" +
+                "    WHERE o.end_date >= NOW() AND hoa.hoa_name = ?\n" +
+                "GROUP BY h.ho_id;", hoaName);
 
         for (var row : result) {
             var officer = new Officer((int)row.get("ho_id"),
@@ -67,14 +70,14 @@ public class AssetActivityUpdateController {
     }
 
     @GetMapping("/getPresident")
-    public Officer getPresident() {
-        var result = jdbcTemplate.queryForList("SELECT * FROM officer o " +
-                "JOIN officer_presidents op ON op.ho_id = o.ho_id" +
-                "\nAND op.position = o.position" +
-                "\nAND op.election_date = o.election_date " +
-                "\nJOIN homeowner h ON o.ho_id = h.ho_id " +
-                "\nJOIN people p ON p.peopleid = h.ho_id " +
-                "\nWHERE o.end_date >= NOW();").get(0);
+    public Officer getPresident(@RequestParam String hoaName) {
+        var result = jdbcTemplate.queryForList("SELECT * FROM officer o JOIN homeowner h ON o.ho_id = h.ho_id\n" +
+                "JOIN officer_presidents op ON op.ho_id = o.ho_id\n" +
+                "JOIN people p ON p.peopleid = h.ho_id\n" +
+                "JOIN properties pr ON pr.ho_id = h.ho_id\n" +
+                "JOIN hoa ON hoa.hoa_name = pr.hoa_name\n" +
+                "    WHERE o.end_date >= NOW() AND hoa.hoa_name = ?\n" +
+                "GROUP BY h.ho_id;", hoaName).get(0);
 
         var officer = new Officer((int)result.get("ho_id"),
                     (String)result.get("position"),
