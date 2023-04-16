@@ -171,10 +171,10 @@ public class AssetActivityUpdateController {
 
     private int generateOR() {
         int id;
-        int count;
+        long count;
         do {
             id = IDGenerator.generate(7);
-            count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ref_ornumbers WHERE ornum = ?", new Object[]{id}, Integer.class);
+            count = (long)jdbcTemplate.queryForList("SELECT COUNT(*) FROM ref_ornumbers WHERE ornum = ?", id).get(0).get("COUNT(*)");
         }while(count == 1);
 
         return id;
