@@ -16,8 +16,9 @@
                           </div>
                           <div class="col-xl-6">
                             <div class="card-body p-md-5 text-black">
+                              <form onsubmit="updateAsset()" id="modalform">
                               <h3 class="mb-5 text-uppercase">Asset Information Update</h3>
-                
+                              
                               <div class="row">
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
@@ -27,7 +28,7 @@
                                 </div>
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
-                                    <input type="text" id="updateName" class="form-control form-control-lg" />
+                                    <input type="text" id="updateName" class="form-control form-control-lg" required/>
                                     <label class="form-label" for="updateName">Asset Name</label>
                                   </div>
                                 </div>
@@ -36,20 +37,20 @@
                               <div class="row">
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
-                                    <input type="date" id="updateDate" class="form-control form-control-lg" />
+                                    <input type="date" id="updateDate" class="form-control form-control-lg" required/>
                                     <label class="form-label" for="updateDate">Acquisition Date</label>
                                   </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                   <div class="form-outline">
-                                    <input type="number" id="updateValue" class="form-control form-control-lg" />
+                                    <input type="number" id="updateValue" class="form-control form-control-lg" required/>
                                     <label class="form-label" for="updateValue">Asset Value</label>
                                   </div>
                                 </div>
                               </div>
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="updateDescription" class="form-control form-control-lg" />
+                                <input type="text" id="updateDescription" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="updateDescription">Asset Description</label>
                               </div>
               
@@ -68,10 +69,11 @@
                                     value="no" />
                                   <label class="form-check-label" for="updateNoRent">No</label>
                                 </div>
+
                                 <div class="row" style="margin-top: 2.5vh;">
                                     <div class="col-md-5 mb-4">
                   
-                                      <select class="select" id="updateType">
+                                      <select class="select" id="updateType" required>
                                         <option disabled selected>Type</option>
                                         <option value="P">Property</option>
                                         <option value="E">Equipment</option>
@@ -81,7 +83,7 @@
                   
                                     </div>
                                     <div class="col-md-6 mb-4">
-                                      <select class="select" id="updateStatus">
+                                      <select class="select" id="updateStatus" required>
                                         <option disabled selected>Status</option>
                                         <option value="W">Working</option>
                                         <option value="D">Deteriorated</option>
@@ -94,23 +96,37 @@
               
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="updateLat" class="form-control form-control-lg" />
+                                <input type="text" id="updateLat" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="updateLat">Location Lattitude</label>
                               </div>
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="updateLong" class="form-control form-control-lg" />
+                                <input type="text" id="updateLong" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="updateLong">Location Longtitude</label>
                               </div>
               
                               <div class="form-outline mb-4">
-                                <input type="text" id="updateHOA" class="form-control form-control-lg" />
+                                <input type="text" id="updateHOA" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="updateHOA">Home Owner Association Name</label>
+                              </div>
+
+                              <div class="form-outline mb-4">
+                                <select class="form-control form-control-lg" id="enclosingAssets">
+                                  <option disabled selected>None</option>
+                                </select>
+                                <label class="form-label" for="enclosingAssets">Enclosing Asset</label>
                               </div>
               
                               <div class="d-flex justify-content-end pt-3">
-                                <button type="button" class="btn btn-warning btn-lg ms-2" onclick="updateAsset()">Submit Form</button>
+                                <button type="submit" class="btn btn-warning btn-lg ms-2">Submit Form</button>
                                 <script>
+                                  document.getElementById("modalform").addEventListener("submit", function(event) {
+                                    // prevent the default form submit behavior
+                                    event.preventDefault();
+                                    
+                                    // call your function here
+                                    updateData();
+                                  });
                                     function updateAsset() {
                                         const asset = {
                                             id: document.getElementById('updateID').value,
@@ -123,9 +139,10 @@
                                             status: document.getElementById('updateStatus').value,
                                             locLattitude: document.getElementById('updateLat').value,
                                             locLongitude: document.getElementById('updateLong').value,
-                                            hoaName: document.getElementById('updateHOA').value
+                                            hoaName: document.getElementById('updateHOA').value,
+                                            enclosingAsset: document.getElementById('enclosingAssets').value
                                         };
-                                        fetch('/updateAssetActivity', {
+                                        fetch('/updateAsset', {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/json'
@@ -138,7 +155,7 @@
                                     }
                                 </script>
                               </div>
-
+                            </form>
                             </div>
                           </div>
                         </div>
@@ -170,6 +187,7 @@
                         </div>
                         <div class="col-xl-6">
                           <div class="card-body p-md-5 text-black">
+                          <form onsubmit="newAsset();" id="modalform2">
                             <h3 class="mb-5 text-uppercase">Insert New Asset</h3>
             
                             <div class="row">
@@ -181,7 +199,7 @@
                               </div>
                               <div class="col-md-6 mb-4">
                                 <div class="form-outline">
-                                  <input type="text" id="newName" class="form-control form-control-lg" />
+                                  <input type="text" id="newName" class="form-control form-control-lg" required/>
                                   <label class="form-label" for="newName">Asset Name</label>
                                 </div>
                               </div>
@@ -190,14 +208,14 @@
                             <div class="row">
                               <div class="col-md-6 mb-4">
                                 <div class="form-outline">
-                                  <input type="number" id="newValue" class="form-control form-control-lg" />
+                                  <input type="number" id="newValue" class="form-control form-control-lg" required/>
                                   <label class="form-label" for="newValue">Asset Value</label>
                                 </div>
                               </div>
                             </div>
             
                             <div class="form-outline mb-4">
-                              <input type="text" id="newDescription" class="form-control form-control-lg" />
+                              <input type="text" id="newDescription" class="form-control form-control-lg" required/>
                               <label class="form-label" for="newDescription">Asset Description</label>
                             </div>
             
@@ -207,7 +225,7 @@
             
                               <div class="form-check form-check-inline mb-0 me-4">
                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="newYesRent"
-                                  value="yes" />
+                                  value="yes" required/>
                                 <label class="form-check-label" for="newYesRent">Yes</label>
                               </div>
             
@@ -218,9 +236,8 @@
                               </div>
                               <div class="row" style="margin-top: 2.5vh;">
                                   <div class="col-md-5 mb-4">
-                
-                                    <select class="select" id="newType">
-                                      <option disabled selected>Type</option>
+                                    <select class="select" id="newType" required>
+                                      <option disabled selected value="">Type</option>
                                       <option value="P">Property</option>
                                       <option value="E">Equipment</option>
                                       <option value="F">F&F</option>
@@ -229,36 +246,42 @@
                 
                                   </div>
                                   <div class="col-md-6 mb-4">
-                                    <select class="select" id="newStatus">
-                                      <option disabled selected>Status</option>
+                                    <select class="select" id="newStatus" required>
+                                      <option disabled selected value="">Status</option>
                                       <option value="W">Working</option>
                                       <option value="D">Deteriorated</option>
                                       <option value="P">For Repair</option>
-                                    </select>
-                
+                                    </select>                                    
                                   </div>
                                 </div>
                             </div>
             
             
                             <div class="form-outline mb-4">
-                              <input type="text" id="newLat" class="form-control form-control-lg" />
+                              <input type="text" id="newLat" class="form-control form-control-lg" required/>
                               <label class="form-label" for="newLat">Location Lattitude</label>
                             </div>
             
                             <div class="form-outline mb-4">
-                              <input type="text" id="newLong" class="form-control form-control-lg" />
+                              <input type="text" id="newLong" class="form-control form-control-lg" required/>
                               <label class="form-label" for="newLong">Location Longtitude</label>
                             </div>
             
                             <div class="form-outline mb-4">
-                              <input type="text" id="newHOA" class="form-control form-control-lg" />
+                              <input type="text" id="newHOA" class="form-control form-control-lg" required/>
                               <label class="form-label" for="newHOA">Home Owner Association Name</label>
                             </div>
             
                             <div class="d-flex justify-content-end pt-3">
-                              <button type="button" class="btn btn-warning btn-lg ms-2" onclick="newAsset();">Submit Form</button>
+                              <button type="submit" class="btn btn-warning btn-lg ms-2">Submit Form</button>
                               <script>
+                                  document.getElementById("modalform2").addEventListener("submit", function(event) {
+                                    // prevent the default form submit behavior
+                                    event.preventDefault();
+                                    
+                                    // call your function here
+                                    updateData();
+                                  });
                                   function newAsset() {
                                       const asset = {
                                           id: document.getElementById('newID').value,
@@ -286,7 +309,7 @@
                                   }
                               </script>
                             </div>
-            
+                          </form>
                           </div>
                         </div>
                       </div>

@@ -1,6 +1,7 @@
 package org.buildr.HOAmanager;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class AssetTable {
     private int id;
@@ -14,11 +15,13 @@ public class AssetTable {
     private BigDecimal locLattitude;
     private BigDecimal locLongitude;
     private String hoaName;
+    private String enclosingAsset;
+    private ArrayList<String> possibleEnclosingAssets;
 
     // Add default constructor
     public AssetTable() {}
 
-    public AssetTable(int id, String name, String description, String type, String status, java.sql.Date acquisitionDate, Boolean forrent, BigDecimal assetValue, BigDecimal locLattitude, BigDecimal locLongitude, String hoaName) {
+    public AssetTable(int id, String name, String description, String type, String status, java.sql.Date acquisitionDate, Boolean forrent, BigDecimal assetValue, BigDecimal locLattitude, BigDecimal locLongitude, String hoaName, String enclosingAsset) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,9 +33,26 @@ public class AssetTable {
         this.locLattitude = locLattitude;
         this.locLongitude = locLongitude;
         this.hoaName = hoaName;
+        this.enclosingAsset = enclosingAsset;
     }
 
     // Getters and Setters
+    public String getEnclosingAsset(){
+        return enclosingAsset;
+    }
+
+    public void setEnclosingAsset(String enclosingAsset){
+        this.enclosingAsset = enclosingAsset;
+    }
+
+    public void updatePossibleEnclosingAsset(ArrayList<String> possibleEnclosingAssets){
+        this.possibleEnclosingAssets = possibleEnclosingAssets;
+    }
+
+    public ArrayList<String> getPossibleEnclosingAssets(){
+        return possibleEnclosingAssets;
+    }
+
     public int getId() {
         return id;
     }

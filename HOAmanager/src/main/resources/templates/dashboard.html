@@ -67,7 +67,28 @@
                                 document.getElementById("updateLat").value = asset.locLattitude;
                                 document.getElementById("updateLong").value = asset.locLongitude;
                                 document.getElementById("updateHOA").value = asset.hoaName;
-                                // Set the values of other input fields here
+
+                                var select = document.getElementById("enclosingAssets");
+                                select.innerHTML = '';
+                                var option = document.createElement("option");
+                                option.text = asset.enclosingAsset;
+                                option.value = asset.enclosingAsset;
+                                select.add(option);
+                                asset.possibleEnclosingAssets.push("None");
+                                for (var i = 0; i < asset.possibleEnclosingAssets.length; i++) {
+                                    var optionValue = asset.possibleEnclosingAssets[i];
+                                    // check if the option already exists
+                                    var optionExists = Array.from(select.options).some(function (option) {
+                                        return option.value === optionValue;
+                                    });
+                                    // if the option doesn't exist, add it
+                                    if (!optionExists) {
+                                        var option = document.createElement("option");
+                                        option.text = optionValue;
+                                        option.value = optionValue;
+                                        select.add(option);
+                                    }
+                                }                    
                             };
                             xhr.send();
                         }
